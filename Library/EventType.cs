@@ -10,6 +10,8 @@ namespace Library
     {
         None = 0,
         ApiCall = 1,
-        LogFileMessage = 2,
+        ApiCallError = 2,
+        LogFileMessage = 10,
+
     }
 }
