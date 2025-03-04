@@ -1,0 +1,26 @@
+services:
+  hydraapi:
+    image: ${DOCKER_REGISTRY-}hydraapi
+    build:
+      context: .
+      dockerfile: ../HydraApi/HydraApi/Dockerfile
+
+  mssql:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "123#Secret"
+      MSSQL_LOGGING: "verbose"
+      MSSQL_PID: "Developer"
+    ports:
+      - 1433:1433
+    volumes:
+      - ./data:/var/opt/mssql/data
+      - ./db_backups:/backup
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
