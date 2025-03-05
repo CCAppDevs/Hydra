@@ -1,3 +1,6 @@
+volumes:
+  sqlserver_data:
+
 services:
   hydraapi:
     image: ${DOCKER_REGISTRY-}hydraapi
@@ -19,8 +22,16 @@ services:
     volumes:
       - ./data:/var/opt/mssql/data
       - ./db_backups:/backup
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 4G
+  
+  # mssql.configurator:
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   volumes:
+  #     - ./init:/docker-entrypoint-initdb.d
+  #   depends_on:
+  #     msssql:
+  #       condition: service_healthy
+  #   command: >
+  #     bash -c '
+  #     /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P ${Sa_Password:-123#Secret} -d master -i docker-entrypoint-initdb.d/mssql-init.sql;
+  #     echo "All done!";
+  #     '
